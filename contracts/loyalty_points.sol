@@ -1,18 +1,27 @@
-pragma solidity ^0.5.2;
+pragma solidity >=0.4.21 <0.6.0;
 
-import "./ERC20/ERC20Mintable.sol";
+import "./token/ERC20/ERC20Mintable.sol";
 
 
-///	@Title Loyalty Points
+//	@Title Loyalty Points
 
 	///@dev Implementation of the logic of Loyalty Points. The loyalty points are ERC20 Mintable tokens
 
 contract loyalty_points is ERC20Mintable {
 
 	///Name of the loyalty_program
-	string public name = "loyalty_points";
-	string public symbol = "LP";
-	uint256 public decimals = 0;
+	address private owner;
+	string private name;
+	string private symbol;
+	uint8 private decimal;
+
+	//the creator of the contarct is the owner
+	constructor(string memory _name, string memory _symbol, uint8 _decimal) public {
+		owner = msg.sender;
+		name = _name;
+		symbol = _symbol;
+		decimal = _decimal;
+	}
 
 	//This is  complex type which will be used to identify a customer
 
@@ -46,10 +55,11 @@ contract loyalty_points is ERC20Mintable {
      */
 
 
-	function regCustomer(string _firstName, string _lastName, string _email) public {
-		require(!customers[msg.sender].isReg, "Customer Registered");
-		require(!businesses[msg.sender].isReg, "Business Registered");
-		customers[msg.sender] = Customer(msg.sender, _firstName, _lastName, _email, true);
+	function regCustomer(string memory _firstName, string memory _lastName, string memory _email, address _cAd) public {
+		require(msg.sender == owner);
+		require(!customers[_cAd].isReg, "Customer Registered");
+		require(!businesses[_cAd].isReg, "Business Registered");
+		customers[_cAd] = Customer(_cAd, _firstName, _lastName, _email, true);
 
 	}
 
@@ -59,11 +69,12 @@ contract loyalty_points is ERC20Mintable {
      * @param _email email of business
      */
 
-	function regBusiness(string __bName, string _email) public {
-		require(!customers[msg.sender].isReg, "Customer Registered");
-		require(!businesses[msg.sender].isReg, "Business Registered");
-		businesses[msg.sender] = Business(msg.sender, _bName , _email, true);
-		mint(msg.sender, 10000)
+	function regBusiness(string memory _bName, string memory _email, address _bAd) public {
+		require(msg.sender == owner);
+		require(!customers[_bAd].isReg, "Customer Registered");
+		require(!businesses[_bAd].isReg, "Business Registered");
+		businesses[_bAd] = Business(_bAd, _bName , _email, true);
+		mint(_bAd, 10000);
 
 	}
 
@@ -79,7 +90,7 @@ contract loyalty_points is ERC20Mintable {
 		require(customers[_cAd].isReg, "This is not a valid customer account");
 		require(businesses[msg.sender].isReg, "This is not a valid business account");
 
-		transferFrom(msg.sender, _cAd, _points)
+		transferFrom(msg.sender, _cAd, _points);
 	}
 
 /**
@@ -93,6 +104,6 @@ contract loyalty_points is ERC20Mintable {
 		//Check if sender is a customer and reciever is a business
 		require(customers[msg.sender].isReg, "This is not a valid customer account");
 		require(businesses[_bAd].isReg, "This is not a valid business account");
-		transferFrom(msg.sender, _bAd, _points)
+		transferFrom(msg.sender, _bAd, _points);
 	}
 }
