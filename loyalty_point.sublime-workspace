@@ -1,0 +1,628 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"total",
+				"totalSupply"
+			],
+			[
+				"tota",
+				"totalSupply"
+			],
+			[
+				"con",
+				"contracts"
+			],
+			[
+				"web3",
+				"web3Provider"
+			],
+			[
+				"to",
+				"todoList"
+			],
+			[
+				"loa",
+				"loadContract"
+			],
+			[
+				"task",
+				"taskCount"
+			],
+			[
+				"fla",
+				"flag_2"
+			],
+			[
+				"s",
+				"s_port"
+			],
+			[
+				"in",
+				"input"
+			],
+			[
+				"def",
+				"define"
+			],
+			[
+				"r_",
+				"r_pref"
+			],
+			[
+				"r",
+				"r_pref"
+			],
+			[
+				"h",
+				"h_pref"
+			],
+			[
+				"wo",
+				"wommen_pref"
+			],
+			[
+				"men",
+				"men_pref"
+			],
+			[
+				"st",
+				"stable_matching"
+			],
+			[
+				"w_",
+				"wmen_pref"
+			],
+			[
+				"k",
+				"k_element"
+			],
+			[
+				"mid",
+				"mid_rem"
+			],
+			[
+				"b",
+				"b_binary"
+			],
+			[
+				"a",
+				"a_binary"
+			],
+			[
+				"clos",
+				"closest"
+			],
+			[
+				"c",
+				"closest"
+			],
+			[
+				"d",
+				"d_temp"
+			],
+			[
+				"p",
+				"p_arr"
+			],
+			[
+				"l",
+				"lsum"
+			],
+			[
+				"lsum",
+				"lsum_fin"
+			],
+			[
+				"max",
+				"max_subarry"
+			],
+			[
+				"server",
+				"server_response"
+			],
+			[
+				"if",
+				"ifmain\tif __name__ == '__main__'"
+			],
+			[
+				"se",
+				"sent_data"
+			],
+			[
+				"co",
+				"connect_tuple"
+			],
+			[
+				"pr",
+				"printf\tprintf …"
+			],
+			[
+				"pre",
+				"prev_type"
+			],
+			[
+				"line",
+				"LINE_LENGTH"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"contents": "pragma solidity ^0.5.2;\n\nimport \"./IERC20.sol\";\nimport \"../../math/SafeMath.sol\";\n\n/**\n * @title Standard ERC20 token\n *\n * @dev Implementation of the basic standard token.\n * https://eips.ethereum.org/EIPS/eip-20\n * Originally based on code by FirstBlood:\n * https://github.com/Firstbloodio/token/blob/master/smart_contract/FirstBloodToken.sol\n *\n * This implementation emits additional Approval events, allowing applications to reconstruct the allowance status for\n * all accounts just by listening to said events. Note that this isn't required by the specification, and other\n * compliant implementations may not do it.\n */\ncontract ERC20 is IERC20 {\n    using SafeMath for uint256;\n\n    mapping (address => uint256) private _balances;\n\n    mapping (address => mapping (address => uint256)) private _allowed;\n\n    uint256 private _totalSupply;\n\n    /**\n     * @dev Total number of tokens in existence\n     */\n    function totalSupply() public view returns (uint256) {\n        return _totalSupply;\n    }\n\n    /**\n     * @dev Gets the balance of the specified address.\n     * @param owner The address to query the balance of.\n     * @return A uint256 representing the amount owned by the passed address.\n     */\n    function balanceOf(address owner) public view returns (uint256) {\n        return _balances[owner];\n    }\n\n    /**\n     * @dev Function to check the amount of tokens that an owner allowed to a spender.\n     * @param owner address The address which owns the funds.\n     * @param spender address The address which will spend the funds.\n     * @return A uint256 specifying the amount of tokens still available for the spender.\n     */\n    function allowance(address owner, address spender) public view returns (uint256) {\n        return _allowed[owner][spender];\n    }\n\n    /**\n     * @dev Transfer token to a specified address\n     * @param to The address to transfer to.\n     * @param value The amount to be transferred.\n     */\n    function transfer(address to, uint256 value) public returns (bool) {\n        _transfer(msg.sender, to, value);\n        return true;\n    }\n\n    /**\n     * @dev Approve the passed address to spend the specified amount of tokens on behalf of msg.sender.\n     * Beware that changing an allowance with this method brings the risk that someone may use both the old\n     * and the new allowance by unfortunate transaction ordering. One possible solution to mitigate this\n     * race condition is to first reduce the spender's allowance to 0 and set the desired value afterwards:\n     * https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729\n     * @param spender The address which will spend the funds.\n     * @param value The amount of tokens to be spent.\n     */\n    function approve(address spender, uint256 value) public returns (bool) {\n        _approve(msg.sender, spender, value);\n        return true;\n    }\n\n    /**\n     * @dev Transfer tokens from one address to another.\n     * Note that while this function emits an Approval event, this is not required as per the specification,\n     * and other compliant implementations may not emit the event.\n     * @param from address The address which you want to send tokens from\n     * @param to address The address which you want to transfer to\n     * @param value uint256 the amount of tokens to be transferred\n     */\n    function transferFrom(address from, address to, uint256 value) public returns (bool) {\n        _transfer(from, to, value);\n        _approve(from, msg.sender, _allowed[from][msg.sender].sub(value));\n        return true;\n    }\n\n    /**\n     * @dev Increase the amount of tokens that an owner allowed to a spender.\n     * approve should be called when _allowed[msg.sender][spender] == 0. To increment\n     * allowed value is better to use this function to avoid 2 calls (and wait until\n     * the first transaction is mined)\n     * From MonolithDAO Token.sol\n     * Emits an Approval event.\n     * @param spender The address which will spend the funds.\n     * @param addedValue The amount of tokens to increase the allowance by.\n     */\n    function increaseAllowance(address spender, uint256 addedValue) public returns (bool) {\n        _approve(msg.sender, spender, _allowed[msg.sender][spender].add(addedValue));\n        return true;\n    }\n\n    /**\n     * @dev Decrease the amount of tokens that an owner allowed to a spender.\n     * approve should be called when _allowed[msg.sender][spender] == 0. To decrement\n     * allowed value is better to use this function to avoid 2 calls (and wait until\n     * the first transaction is mined)\n     * From MonolithDAO Token.sol\n     * Emits an Approval event.\n     * @param spender The address which will spend the funds.\n     * @param subtractedValue The amount of tokens to decrease the allowance by.\n     */\n    function decreaseAllowance(address spender, uint256 subtractedValue) public returns (bool) {\n        _approve(msg.sender, spender, _allowed[msg.sender][spender].sub(subtractedValue));\n        return true;\n    }\n\n    /**\n     * @dev Transfer token for a specified addresses\n     * @param from The address to transfer from.\n     * @param to The address to transfer to.\n     * @param value The amount to be transferred.\n     */\n    function _transfer(address from, address to, uint256 value) internal {\n        require(to != address(0));\n\n        _balances[from] = _balances[from].sub(value);\n        _balances[to] = _balances[to].add(value);\n        emit Transfer(from, to, value);\n    }\n\n    /**\n     * @dev Internal function that mints an amount of the token and assigns it to\n     * an account. This encapsulates the modification of balances such that the\n     * proper events are emitted.\n     * @param account The account that will receive the created tokens.\n     * @param value The amount that will be created.\n     */\n    function _mint(address account, uint256 value) internal {\n        require(account != address(0));\n\n        _totalSupply = _totalSupply.add(value);\n        _balances[account] = _balances[account].add(value);\n        emit Transfer(address(0), account, value);\n    }\n\n    /**\n     * @dev Internal function that burns an amount of the token of a given\n     * account.\n     * @param account The account whose tokens will be burnt.\n     * @param value The amount that will be burnt.\n     */\n    function _burn(address account, uint256 value) internal {\n        require(account != address(0));\n\n        _totalSupply = _totalSupply.sub(value);\n        _balances[account] = _balances[account].sub(value);\n        emit Transfer(account, address(0), value);\n    }\n\n    /**\n     * @dev Approve an address to spend another addresses' tokens.\n     * @param owner The address that owns the tokens.\n     * @param spender The address that will spend the tokens.\n     * @param value The number of tokens that can be spent.\n     */\n    function _approve(address owner, address spender, uint256 value) internal {\n        require(spender != address(0));\n        require(owner != address(0));\n\n        _allowed[owner][spender] = value;\n        emit Approval(owner, spender, value);\n    }\n\n    /**\n     * @dev Internal function that burns an amount of the token of a given\n     * account, deducting from the sender's allowance for said account. Uses the\n     * internal burn function.\n     * Emits an Approval event (reflecting the reduced allowance).\n     * @param account The account whose tokens will be burnt.\n     * @param value The amount that will be burnt.\n     */\n    function _burnFrom(address account, uint256 value) internal {\n        _burn(account, value);\n        _approve(account, msg.sender, _allowed[account][msg.sender].sub(value));\n    }\n}\n",
+			"file": "contracts/ERC20.sol",
+			"file_size": 7650,
+			"file_write_time": 131981767318079280,
+			"settings":
+			{
+				"buffer_size": 7650,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/ryan/device_details.txt",
+			"settings":
+			{
+				"buffer_size": 2817,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "list_of_my_elements([pear, grape, banana, plum, apples]),\ninput(X)\n\nin_my_list_of_elements(X) :- \n    list_of_my_elements(L),\n    member(X, L),\n    write(X), write(' found in the list').",
+			"file": "/home/ryan/nitk/it/POP2/ass2/list_prolog.pl",
+			"file_size": 187,
+			"file_write_time": 131982987316686537,
+			"settings":
+			{
+				"buffer_size": 186,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/ryan/nitk/it/POP2/ass2/list_sql.sql",
+			"settings":
+			{
+				"buffer_size": 499,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "README.md",
+			"settings":
+			{
+				"buffer_size": 124,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"insta",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 185.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '6f4c264a24d933ce70df5dedcf1dcaee' + 'ebe013ee18cced0ef93d5f746d80ef60'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)",
+			"import urllib.request,os,hashlib; h = '6f4c264a24d933ce70df5dedcf1dcaee' + 'ebe013ee18cced0ef93d5f746d80ef60'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by",
+			"import urllib.request,os,hashlib; h = 'df21e130d211cfc94d9b0905775a7c0f' + '1e3d39e33b79698005270310898eea76'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/home/ryan/dev/blockchain/loyalty_points",
+		"/home/ryan/dev/blockchain/loyalty_points/contracts",
+		"/home/ryan/dev/blockchain/loyalty_points/migrations"
+	],
+	"file_history":
+	[
+		"/home/ryan/dev/blockchain/loyalty_points/truffle-config.js",
+		"/home/ryan/dev/blockchain/loyalty_points/loyalty_point.sublime-project",
+		"/home/ryan/dev/blockchain/loyalty_points/loyaty_points/migrations/2_deploy_contracts.js",
+		"/home/ryan/dev/blockchain/loyalty_points/contracts/access/Roles.sol",
+		"/home/ryan/dev/blockchain/loyalty_points/loyaty_points/test/LoaltyToken.js",
+		"/home/ryan/dev/blockchain/loyalty_points/loyaty_points/contracts/LoyaltyToken.sol",
+		"/home/ryan/dev/blockchain/loyalty_points/contracts/LoyaltyToken.sol",
+		"/home/ryan/Desktop/pm/pm_journal.sh",
+		"/home/ryan/Desktop/pm/pm.sh",
+		"/home/ryan/Desktop/nvidia_workshop",
+		"/home/ryan/Desktop/pm/pm_ssd.sh",
+		"/home/ryan/output/extf4_5\r",
+		"/home/ryan/output/btrfs_1\r",
+		"/home/ryan/dev/blockchain/loyalty_points/loyaty_points/truffle-config.js",
+		"/home/ryan/dev/blockchain/eth-todo-list/package.json",
+		"/home/ryan/dev/blockchain/eth-todo-list/contracts/TodoList.sol",
+		"/home/ryan/dev/blockchain/eth-todo-list/package",
+		"/home/ryan/output/extf4_1\r",
+		"/home/ryan/Desktop/pm/extf4/cfq/extf4_1\r",
+		"/home/ryan/p1.py",
+		"/home/ryan/ntfs_2\r",
+		"/home/ryan/ntfs_2",
+		"/home/ryan/Desktop/pm/extf4/cfq/2/details",
+		"/home/ryan/Desktop/pm/extf4/cfq/3/details",
+		"/home/ryan/Desktop/pm/extf4/cfq/4/details",
+		"/home/ryan/Desktop/pm/extf4/cfq/5/details",
+		"/home/ryan/Desktop/pm/extf4/cfq/1/extf4_1",
+		"/home/ryan/Desktop/pm/extf4/cfq/1/details",
+		"/home/ryan/extf4_3",
+		"/home/ryan/extf4_2",
+		"/home/ryan/extf4_1",
+		"/home/ryan/nitk/2nd Year RI/RS/rs",
+		"/home/ryan/nitk/it/cnn/lab/4/client.py",
+		"/home/ryan/nitk/it/cnn/lab/4/server.py",
+		"/home/ryan/nitk/it/cnn/lab/3/server/client.py",
+		"/home/ryan/nitk/it/cnn/lab/3/server/server.py",
+		"/home/ryan/nitk/it/cnn/lab/3/server/recieve_file",
+		"/home/ryan/nitk/it/cnn/lab/3/server/file",
+		"/home/ryan/nitk/it/cnn/lab/2/client.py",
+		"/home/ryan/nitk/it/cnn/lab/2/server.py",
+		"/home/ryan/nitk/it/cnn/lab/1/client.py",
+		"/home/ryan/nitk/it/cnn/lab/1/server.py",
+		"/home/ryan/dev/trydjango/src/trydjango/urls.py",
+		"/home/ryan/dev/trydjango/src/pages/views.py",
+		"/home/ryan/dev/trydjango/src/trydjango/settings.py",
+		"/home/ryan/nitk/it/POP2/Yet-Another-Compiler-Compiler-master/yapl.y",
+		"/home/ryan/nitk/it/POP2/Interpreter-using-lex-and-yaac-master/final_compile.y",
+		"/home/ryan/nitk/it/POP2/lex/assignment1/ass.y",
+		"/home/ryan/nitk/it/POP2/lex/assignment1/myscanner.h",
+		"/home/ryan/nitk/it/POP2/lex/assignment1/myscanner.l",
+		"/home/ryan/dev/trydjango/src/products/admin.py",
+		"/home/ryan/dev/trydjango/src/products/models.py",
+		"/home/ryan/dev/trydjango/lib/python3.5/site-packages/django/db/models/fields/__init__.py",
+		"/home/ryan/dev/trydjango/trydjango.sublime-project",
+		"/home/ryan/dev/trydjango/src/manage.py",
+		"/home/ryan/nitk/it/POP2/lex/practice/p4/ey4.y",
+		"/home/ryan/nitk/it/POP2/lex/practice/p3/e3.l",
+		"/home/ryan/nitk/it/POP2/lex/practice/p3/file",
+		"/home/ryan/nitk/it/POP2/lex/practice/p2/e2.l",
+		"/home/ryan/nitk/it/POP2/lex/practice/ex1.l",
+		"/home/ryan/trips_plan",
+		"/home/ryan/nitk/it/daa/stable_matching/gale_shapely/p1.py",
+		"/home/ryan/nitk/it/daa/stable_matching/national_resident_matching_program/p1.py",
+		"/home/ryan/nitk/it/daa/stable_matching/p1/p1.py",
+		"/home/ryan/nitk/it/daa/dag/topological_sort/topological_sort.py",
+		"/home/ryan/nitk/it/daa/dag/topological_sort/test",
+		"/home/ryan/nitk/it/daa/dag/topological_sort/topological_sort",
+		"/home/ryan/nitk/it/daa/dag/shortest_path/shortest_path.py",
+		"/home/ryan/nitk/it/daa/stable_matching/stable_matching.py",
+		"/home/ryan/nitk/it/daa/dag/shortest_path/shortest_path",
+		"/home/ryan/nitk/it/daa/divide_and_conquer/binary_search_rotate/rotate.py",
+		"/home/ryan/nitk/it/daa/divide_and_conquer/binary_search_3/binary_Search_3.py",
+		"/home/ryan/nitk/it/daa/divide_and_conquer/binary_search_3/binary_Search_3",
+		"/home/ryan/nitk/it/daa/divide_and_conquer/binary_search/binary_search.py",
+		"/home/ryan/nitk/it/daa/divide_and_conquer/binary_search/binary_search",
+		"/home/ryan/nitk/it/daa/divide_and_conquer/square_root/square_root.py",
+		"/home/ryan/nitk/it/daa/divide_and_conquer/square_root/square_root",
+		"/home/ryan/nitk/it/daa/divide_and_conquer/tower_of_hanoi/tower_of_hanoi.py",
+		"/home/ryan/nitk/it/daa/katsuba/p1.py",
+		"/home/ryan/nitk/it/daa/closest_points/test",
+		"/home/ryan/nitk/it/daa/closest_points/p1.py",
+		"/home/ryan/nitk/it/daa/matrix_mul/p1.py",
+		"/home/ryan/nitk/it/daa/max_sub_array/p1.py",
+		"/home/ryan/nitk/it/daa/max_sub_array/p1.python",
+		"/home/ryan/socket_programming/lab1/server.c",
+		"/home/ryan/socket_programming/lab1/client.c",
+		"/home/ryan/cb/p1.py",
+		"/home/ryan/tutorial/decenapp/voting.sol",
+		"/home/ryan/tutorial/blockchain/package.json",
+		"/home/ryan/tutorial/blockchain/public/index.html",
+		"/home/ryan/tutorial/blockchain/app.js",
+		"/home/ryan/web/flask/tutorial_miguel/microblog/microblog.py",
+		"/home/ryan/web/flask/tutorial_miguel/microblog/app/routes.py",
+		"/home/ryan/web/flask/tutorial_miguel/microblog/app/subl",
+		"/home/ryan/web/flask/tutorial_miguel/microblog/app/__init__.py",
+		"/home/ryan/network/p2/server.py",
+		"/home/ryan/network/p2/client.py",
+		"/home/ryan/network/p1/server.py",
+		"/home/ryan/network/p1/client.py",
+		"/home/ryan/network/p1.py",
+		"/home/ryan/temp/p2.py",
+		"/home/ryan/temp/p1.py",
+		"/home/ryan/ctf/xmas/web2/var _0x3eec=[\"\\x69\\x6E\\x6E\\x65\\x72\\x48\\x54\\x4D\\x4",
+		"/home/ryan/ctf/xmas/forensics3/Celebration",
+		"/home/ryan/ctf/xmas/forensics3/p1/Celebration",
+		"/home/ryan/ctf/xmas/forensic1/img.jpg",
+		"/home/ryan/ctf/xmas/forensic1/new",
+		"/home/ryan/test/p1",
+		"/media/ryan/DATA/IT/unix project/101018/p1.c",
+		"/media/ryan/DATA/IT/unix project/07-1118/p1.c",
+		"/media/ryan/DATA/IT/unix project/p1.c"
+	],
+	"find":
+	{
+		"height": 31.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"]),\n"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 3,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "contracts/ERC20.sol",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7650,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5078,
+								5078
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Ethereum/Solidity.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/home/ryan/device_details.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2817,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1388,
+								1388
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/home/ryan/nitk/it/POP2/ass2/list_prolog.pl",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 186,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								66,
+								66
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Perl/Perl.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/home/ryan/nitk/it/POP2/ass2/list_sql.sql",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 499,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								499,
+								499
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/SQL/SQL.sublime-syntax",
+							"tab_size": 3,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "README.md",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 124,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								124,
+								124
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Markdown/Markdown.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 31.0
+	},
+	"input":
+	{
+		"height": 36.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "loyalty_point.sublime-project",
+	"replace":
+	{
+		"height": 58.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
