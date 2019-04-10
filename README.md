@@ -11,11 +11,11 @@ Each retailer has his own crypto-token .
 
 Contracts Implemented:
 
-1. Loyalty Points is a ERC20Mintable token that can be used to organise the structure of each loyalty token and to build additional functionality to be built into the loyalty token. For much additional functionality is implemented for the base ERC20 token itself..
-[Smart Contract for loyalty token](./contracts/loyalty_points.sol)
-
-2. Loyalty Overview controls the whole rewards system. It keeps a track of businesses and customers and controls transactions between them. The core functionality of the program is in this smart contract.
+1. Loyalty Overview controls the whole rewards system. It keeps a track of businesses and customers and controls transactions between them. The core functionality of the program is in this smart contract.
 [Smart Contract for loyalty program](./contracts/loyalty_overview.sol)
+
+2. Loyalty Points is a ERC20Mintable token that can be used to organise the structure of each loyalty token and to build additional functionality to be built into the loyalty token. For much additional functionality is implemented for the base ERC20 token itself..
+[Smart Contract for loyalty token](./contracts/loyalty_points.sol)
 
 There are two types of users in the loyalty points system: Businesses and Customers.
 
@@ -44,7 +44,7 @@ ganache-cli
 
 The Truffe framework is used
 ```bash
-truffle
+truffle 
 ```
 
 ## Testing
