@@ -16,8 +16,8 @@ contract loyalty_points is ERC20Mintable {
 	uint8 private decimal;
 
 	//the creator of the contarct is the owner
-	constructor(string memory _name, string memory _symbol, uint8 _decimal) public {
-		owner = msg.sender;
+	constructor(address _bAd, string memory _name, string memory _symbol, uint8 _decimal) public {
+		owner = _bAd;
 		name = _name;
 		symbol = _symbol;
 		decimal = _decimal;
@@ -25,27 +25,13 @@ contract loyalty_points is ERC20Mintable {
 
 	//This is  complex type which will be used to identify a customer
 
-	struct Customer {
-        address cusAd;
-        string firstName;
-        string lastName;
-        string email;
-        bool isReg;
-	}
 
 	//This is  complex type which will be used to identify a business
 
-	struct Business {
-        address busAd;
-        string name;
-        string email;
-        bool isReg;
 
-	}
 
-	///each adress is mapped to a specific customer or business
-	mapping(address => Customer) public customers;
-	mapping(address => Business) public businesses;
+	///each address is mapped to a specific customer or business
+
 
     /**
      * @dev Registers a new customer
@@ -55,13 +41,7 @@ contract loyalty_points is ERC20Mintable {
      */
 
 
-	function regCustomer(string memory _firstName, string memory _lastName, string memory _email, address _cAd) public {
-		require(msg.sender == owner);
-		require(!customers[_cAd].isReg, "Customer Registered");
-		require(!businesses[_cAd].isReg, "Business Registered");
-		customers[_cAd] = Customer(_cAd, _firstName, _lastName, _email, true);
 
-	}
 
 	   /**
      * @dev Registers a new business
@@ -69,14 +49,7 @@ contract loyalty_points is ERC20Mintable {
      * @param _email email of business
      */
 
-	function regBusiness(string memory _bName, string memory _email, address _bAd) public {
-		require(msg.sender == owner);
-		require(!customers[_bAd].isReg, "Customer Registered");
-		require(!businesses[_bAd].isReg, "Business Registered");
-		businesses[_bAd] = Business(_bAd, _bName , _email, true);
-		mint(_bAd, 10000);
 
-	}
 
     /**
      * @dev Credit points to a customers account. This function can only be invoked by a business
@@ -85,13 +58,6 @@ contract loyalty_points is ERC20Mintable {
      * @param _cAd Address of Customer
      */
 
-	function putPoints (uint256 _points, address _cAd ) public {
-		//Check if sender is a business and reciever is a customer
-		require(customers[_cAd].isReg, "This is not a valid customer account");
-		require(businesses[msg.sender].isReg, "This is not a valid business account");
-
-		transferFrom(msg.sender, _cAd, _points);
-	}
 
 /**
      * @dev Redeem points. Points are transfered from the customer to the business. This function can only be invoked by a customer
@@ -100,10 +66,5 @@ contract loyalty_points is ERC20Mintable {
      * @param _bAd Address of Business
      */
 
-	function spendPoints (uint256 _points, address _bAd ) public{
-		//Check if sender is a customer and reciever is a business
-		require(customers[msg.sender].isReg, "This is not a valid customer account");
-		require(businesses[_bAd].isReg, "This is not a valid business account");
-		transferFrom(msg.sender, _bAd, _points);
 	}
 }

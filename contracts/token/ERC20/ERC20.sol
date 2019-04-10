@@ -183,7 +183,10 @@ contract ERC20 is IERC20 {
      * @param account The account whose tokens will be burnt.
      * @param value The amount that will be burnt.
      */
-    function _burnFrom(address account, uint256 value) internal {
+
+     //editted burnFrom function scope from internal to public may need to correct this to account for permission
+    function burnFrom(address account, uint256 value) public {
+        //require account to be sender to stop permission failure
         _burn(account, value);
         _approve(account, msg.sender, _allowed[account][msg.sender].sub(value));
     }
