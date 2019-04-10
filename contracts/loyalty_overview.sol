@@ -8,7 +8,7 @@ contract loyalty_overview {
 
 	address private owner;
 
-	constructor(string memory _name, string memory _symbol, uint8 _decimal) public {
+	constructor() public {
 		owner = msg.sender;
 	}
 
