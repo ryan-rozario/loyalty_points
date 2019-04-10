@@ -9,7 +9,7 @@ This repo contains the code for the smart contract for a decentralized loyalty s
 The loyalty points are Mintable ERC20 tokens based on the ERC20 standard.
 Each retailer has his own crypto-token .
 
-Contracts Implemented:
+Contracts Implemented by me:
 
 1. Loyalty Overview controls the whole rewards system. It keeps a track of businesses and customers and controls transactions between them. The core functionality of the program is in this smart contract.
 [Smart Contract for loyalty program](./contracts/loyalty_overview.sol)
@@ -30,7 +30,7 @@ These transactions are stored in the blockchain as an immutable distributed ledg
 
 Since the loyalty tokens are ERC20 tokens they can also be converted to other crypto-tokens if support for that is provided.
 
-Smart Contract not implemented by me:
+Smart Contracts that are not implemented by me:
 All smart contracts related to the Mintable ERC20 Token implementation are taken from the [OpenZeppelin Library](https://github.com/OpenZeppelin/openzeppelin-solidity). All contracts in the access, token and math folder are not implemented by me. These are taken from the OpenZeppelin Library. This is done as ERC20 is a standard for which OpenZeppelin provides a commonly used implementation. Simply implementing this would be reinventing the wheel. Since the OpenZeppelin implementation provides a uniform implementation across several contracts, it becomes easier in the future to link our loyalty token with other crypto-tokens. 
 
 ## Frameworks
