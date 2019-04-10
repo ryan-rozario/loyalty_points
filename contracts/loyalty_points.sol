@@ -9,7 +9,7 @@ import "./token/ERC20/ERC20Mintable.sol";
 
 contract loyalty_points is ERC20Mintable {
 
-	///Name of the loyalty_program
+	///Name of the loyalty_program of business
 	address private owner;
 	string private name;
 	string private symbol;
@@ -21,50 +21,5 @@ contract loyalty_points is ERC20Mintable {
 		name = _name;
 		symbol = _symbol;
 		decimal = _decimal;
-	}
-
-	//This is  complex type which will be used to identify a customer
-
-
-	//This is  complex type which will be used to identify a business
-
-
-
-	///each address is mapped to a specific customer or business
-
-
-    /**
-     * @dev Registers a new customer
-     * @param _firstName first name of customer
-     * @param _lastName last name of customer
-     * @param _email email of customer
-     */
-
-
-
-
-	   /**
-     * @dev Registers a new business
-     * @param _bName  name of business
-     * @param _email email of business
-     */
-
-
-
-    /**
-     * @dev Credit points to a customers account. This function can only be invoked by a business
-     * Emits an transfer event.
-     * @param _points Points to be transfered
-     * @param _cAd Address of Customer
-     */
-
-
-/**
-     * @dev Redeem points. Points are transfered from the customer to the business. This function can only be invoked by a customer
-     * Emits an transfer event.
-     * @param _points Points to be transfered
-     * @param _bAd Address of Business
-     */
-
 	}
 }
