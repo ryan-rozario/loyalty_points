@@ -5,7 +5,7 @@ import "./token/ERC20/ERC20Mintable.sol";
 
 //	@Title Loyalty Points
 
-	///@dev Implementation of the logic of Loyalty Points. The loyalty points are ERC20 Mintable tokens
+	///@dev Implementation of the Loyalty Tokens. The loyalty points are ERC20 Mintable tokens
 
 contract loyalty_points is ERC20Mintable {
 

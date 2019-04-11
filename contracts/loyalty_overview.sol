@@ -3,6 +3,10 @@ pragma solidity >=0.4.21 <0.6.0;
 
 import "./loyalty_points.sol";
 
+//	@Title Loyalty Overview
+
+///@dev Logic for the whole loyalty program system. Each business is assigned its own crypto token. Customers can choose which business loyalty program to join. Businesses can choose to partner up with other businesses. Customers can redeem tokens earned at one businesses at another business provided they have a partnership.
+
 
 contract loyalty_overview {
 
