@@ -69,13 +69,3 @@ Tests:
 
 
 
-
-## Contributing
-Pull requests are welcome.
-
-## Future Work
-[x] Development of collaboration between between businesses.
-
-[x] Collaborations between businesses would allow for certain businesses to work together such as if they were in the same locality to provide special deals for their customers.
-
-Note for FOSSEE IITB: The extended deadline allowed me to implement the above work.
